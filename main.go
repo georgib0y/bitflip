@@ -22,7 +22,7 @@ func NewFlipperReader(r io.Reader, rSize int) *FlipperReader {
 
 func (f *FlipperReader) Read(p []byte) (int, error) {
 	w, err := f.r.Read(p)
-	if err != nil {
+	if err != nil && err != io.EOF {
 		return w, err
 	}
 
@@ -35,7 +35,7 @@ func (f *FlipperReader) Read(p []byte) (int, error) {
 		f.hasFlipped = true
 	}
 
-	return int(w), nil
+	return int(w), err
 }
 
 func main() {
